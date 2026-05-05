@@ -403,7 +403,7 @@ print(f"⚠️ Препятствий: {len(impassable_obstacles)}")
 print(f"\n🎯 Цель: A → B → A")
 print(f"⌨️ Управление: стрелки или WASD")
 print(f"🔄 Сброс: R")
-print(f"\n🔴 КРАСНЫЕ = штраф -20")
+print(f"\n🔴 КРАСНЫЕ = штраф -10")
 print(f"🟢 ЗЕЛЁНЫЕ = GAME OVER (появляются на обратном пути)")
 
 while True:
