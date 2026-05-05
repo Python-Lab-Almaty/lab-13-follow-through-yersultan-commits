@@ -403,7 +403,7 @@ print(f"⚠️ Препятствий: {len(impassable_obstacles)}")
 print(f"\n🎯 Цель: A → B → A")
 print(f"⌨️ Управление: стрелки или WASD")
 print(f"🔄 Сброс: R")
-print(f"\n🔴 КРАСНЫЕ = штраф -10")
+print(f"\n🔴 КРАСНЫЕ = штраф -20")
 print(f"🟢 ЗЕЛЁНЫЕ = GAME OVER (появляются на обратном пути)")
 
 while True:
@@ -452,7 +452,7 @@ while True:
         print(f"🟩 Препятствий появилось: {obstacles_spawned_count}")
 
         
-    stats = {"name": "Yersultan", "time": elapsed_time, "penalties": penalties}
+    stats = {"name": "Yersultan", "time": current_time, "penalties": penalties}
     
     try:
         with open('leaderboard.json', 'r') as f:
@@ -492,7 +492,7 @@ while True:
 
               #задача 3
         record_file = 'leaderboard.json'
-        new_data = {"name": "Yersultan", "time": elapsed_time, "penalties": penalties}
+        new_data = {"name": "Yersultan", "time": current_time, "penalties": penalties}
 
         
         try:
