@@ -146,6 +146,12 @@ hero.penup()
 hero.goto(start)
 hero.shapesize(2, 2)
 
+timer_display = turtle.Turtle()
+timer_display.hideturtle()
+timer_display.penup()
+timer_display.goto(-230, 210)  
+start_time = time.time()
+
 # ----------------------------
 # 🟢 ПРЕПЯТСТВИЯ
 # ----------------------------
@@ -291,7 +297,7 @@ def check_collision():
     for ox, oy, (w, h) in impassable_obstacles:
         if rect_collision(hero.xcor(), hero.ycor(), ox, oy, w, h, hero_radius=15):
             penalties += 20
-            print(f"⚠️ ШТРАФ! (-10 баллов)")
+            print(f"⚠️ ШТРАФ! (-20 баллов)")
             hero.goto(hero.xcor() - vx*3, hero.ycor() - vy*3)
             return "penalty"
     
@@ -415,6 +421,10 @@ while True:
                     obs[1] -= obs[5]
                 else:
                     obs[4] = False
+                    
+            current_time = int(time.time() - start_time)
+            timer_display.clear()
+            timer_display.write(f"Время: {current_time} сек", font=("Arial", 14, "bold"))
     
     # Проверка достижения цели
     if going_forward and abs(hero.xcor() - goal[0]) < 40 and abs(hero.ycor() - goal[1]) < 40:
@@ -440,6 +450,26 @@ while True:
         print(f"⚠️ Penalties: {penalties}")
         print(f"📊 Final Score: {final_score}")
         print(f"🟩 Препятствий появилось: {obstacles_spawned_count}")
+
+        
+    stats = {"name": "Yersultan", "time": elapsed_time, "penalties": penalties}
+    
+    try:
+        with open('leaderboard.json', 'r') as f:
+            data = json.load(f)
+    except:
+        data = []
+
+    data.append(stats)
+    
+    data = sorted(data, key=lambda x: x['time'])[:3]
+
+    with open('leaderboard.json', 'w') as f:
+        json.dump(data, f, indent=4)
+
+    print("\n🏆 ТОП-3 РЕЗУЛЬТАТА:")
+    for i, r in enumerate(data, 1):
+        print(f"{i}. {r['name']} - {r['time']} сек")
         
         log.append({
             "event": "mission_complete",
@@ -459,6 +489,30 @@ while True:
         
         save_log("mission_complete")  # ✅ ОДИН РАЗ В КОНЦЕ!
         break
+
+              #задача 3
+        record_file = 'leaderboard.json'
+        new_data = {"name": "Yersultan", "time": elapsed_time, "penalties": penalties}
+
+        
+        try:
+            with open(record_file, 'r', encoding='utf-8') as f:
+                leaderboard = json.load(f)
+        except (FileNotFoundError, json.JSONDecodeError):
+            leaderboard = []
+
+    
+        leaderboard.append(new_data)
+        leaderboard = sorted(leaderboard, key=lambda x: x['time'])[:3]
+
+        
+        with open(record_file, 'w', encoding='utf-8') as f:
+            json.dump(leaderboard, f, indent=4, ensure_ascii=False)
+
+        
+        print("\n🏆 ТАБЛИЦА РЕКОРДОВ (TOP 3):")
+        for i, res in enumerate(leaderboard, 1):
+            print(f"{i}. {res['name']} | Время: {res['time']} сек | Штрафы: {res['penalties']}")
     
     # Столкновение
     collision = check_collision()
